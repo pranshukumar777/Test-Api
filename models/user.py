@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, EmailStr
+
 class User(BaseModel):
-    id:int
-    name:str
-    contact:str
-    email:str
+    id: int = Field(gt=0)
+    name: str = Field(max_length=15)
+    contact: str
+    email: EmailStr

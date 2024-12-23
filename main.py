@@ -4,6 +4,8 @@ from models.user import User
 from models.event import Event
 from services.userService import UserService
 from services.eventService import EventService
+from services.event_participationService import Event_ParticipationService
+from repos.event_participationRepo import Event_ParticipationRepo
 
 from fastapi.encoders import jsonable_encoder
 from mysql.connector import Error
@@ -17,7 +19,7 @@ userRepo = UserRepo()
 userService = UserService(userRepo)
 
 
-@app.get("/{id}")
+@app.get("/home/{id}")
 def getHome(id: int):
     return {"message": "welcome to fastapi {id}"}
 
@@ -28,13 +30,13 @@ def getUser(id: int):
     return jsonable_encoder(resultUser)
 
 
-@app.post("/participant")
+@app.post("/participant/create")
 def createUser(user: User):
     userService.createUser(user)
     return {"message": "created!"}
 
 
-@app.put("/participant/{id}")
+@app.put("/participant/update/{id}")
 def updateUser(id: int, user: User):
     result = userService.updateUser(id, user)
     return jsonable_encoder(result)
@@ -59,13 +61,13 @@ def getEvent(id: int):
     return jsonable_encoder(result)
 
 
-@app.post("/event")
+@app.post("/event/create")
 def createEvent(event: Event):
     eventService.createEvent(event)
     return {"message": "created!"}
 
 
-@app.put("/event/{id}")
+@app.put("/event/update/{id}")
 def updateEvent(id: int, event: Event):
     result = eventService.updateEvent(id, event)
     return jsonable_encoder(result)
@@ -75,12 +77,21 @@ def updateEvent(id: int, event: Event):
 def deleteEvent(id: int):
     try:
         eventService.deleteEvent(id)
-        return {"message": "event deleted!"}
+        return {"message": "event deleted from events!"}
     except Error as err:
         print(f"Error :{err}")
 
+event_participationRepo = Event_ParticipationRepo()
+event_participationService = Event_ParticipationService(event_participationRepo)
+
 
 @app.post("/event/{eventid}/participant/{participantid}")
-def createEvent_Participation(eventid: int, participationid: int):
-    Event_ParticipationService.createEvent_Participation(eventid, participationid)
+def createEvent_Participation(eventid: int, participantid: int):
+    event_participationService.createEvent_Participation(eventid, participantid)
     return {"message": "created!!"}
+
+
+@app.delete("/event/participant/delete/{event_participationid}")
+def deleteEvent_Participation(event_participationid: int):
+    event_participationService.deleteEvent_Participation(event_participationid)
+    return {"message": "deleted from Event_Participation!!"}
