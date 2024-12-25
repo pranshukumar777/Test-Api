@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, validator
 
-class User(BaseModel):
+
+class Participant(BaseModel):
     id: int = Field(gt=0)
     name: str = Field(max_length=15)
     contact: str
