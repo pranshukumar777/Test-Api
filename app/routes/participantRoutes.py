@@ -1,5 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException
-from models.user import Participant
+from models.participant import Participant
 from services.userService import UserService
 from fastapi.encoders import jsonable_encoder
 from mysql.connector import Error

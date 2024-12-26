@@ -1,4 +1,4 @@
-from models.user import Participant
+from models.participant import Participant
 from repos.participationRepo import ParticipationRepo
 
 
